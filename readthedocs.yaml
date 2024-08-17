@@ -13,12 +13,8 @@ formats:
 
 # Define the requirements for building your documentation
 python:
-  version: 3.8
+  version: "3.8"
   install:
     - method: pip
       path: .
     - requirements: docs/requirements.txt
-
-# Build the documentation in the docs/ directory
-build:
-  image: latest
