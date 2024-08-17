@@ -98,7 +98,6 @@ def tune_and_evaluate_catboost(X_train, y_train, X_test, y_test):
     # Evaluate best model
     y_pred_best = best_catboost.predict(X_test)
     r2_best = r2_score(y_test, y_pred_best)
-    rmse_best = np.sqrt(mean_squared_error(y_test, y_pred_best
     rmse_best = np.sqrt(mean_squared_error(y_test, y_pred_best))
     mae_best = mean_absolute_error(y_test, y_pred_best)
 
