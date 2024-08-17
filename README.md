@@ -7,19 +7,19 @@ Overleaf: https://www.overleaf.com/read/ydvfhffcycdw#7b39fa
 # Directory Structure
 
 
-winepredict/
-├── winepredict/
-│ ├── init.py/
-│ ├── data_processing.py/
-│ ├── model_training.py/
-│ ├── model_evaluation.py/
-│ └── visualization.py/
-├── tests/
-│ ├── init.py/
-│ ├── test_data_processing.py/
-│ ├── test_model_training.py/
-│ ├── test_model_evaluation.py/
-│ └── test_visualization.py/
-├── pyproject.toml/
-└── README.md/
+winepredict\
+├── winepredict\
+│ ├── init.py\
+│ ├── data_processing.py\
+│ ├── model_training.py\
+│ ├── model_evaluation.py\
+│ └── visualization.py\
+├── tests\
+│ ├── init.py\
+│ ├── test_data_processing.py\
+│ ├── test_model_training.py\
+│ ├── test_model_evaluation.py\
+│ └── test_visualization.py\
+├── pyproject.toml\
+└── README.md\
 
