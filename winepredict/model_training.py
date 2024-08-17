@@ -11,6 +11,7 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 from catboost import CatBoostRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
+from sklearn.exceptions import ConvergenceWarning  # Import ConvergenceWarning
 import warnings
 
 def train_and_evaluate_models(scaled_df):
