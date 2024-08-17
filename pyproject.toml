@@ -19,5 +19,9 @@ dependencies = [
     "lightgbm",
     "catboost",
     "openpyxl",
-    "requests"
+    "requests",
+    "dask[dataframe]",
+    "torch",
+    "torchvision",
+    "torchaudio"
 ]
