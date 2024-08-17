@@ -3,6 +3,7 @@ from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from sklearn.model_selection import cross_val_score
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.model_selection import StratifiedKFold
 
 def evaluate_model(model, X_train, X_test, y_train, y_test):
     """Evaluates the model on training and testing data.
@@ -51,7 +52,8 @@ def cross_validate_model(model, X, y):
     Returns:
         np.ndarray: Cross-validated R² scores.
     """
-    cv_results = cross_val_score(model, X, y, cv=5, scoring='r2')
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1)
+    cv_results = cross_val_score(model, X, y, cv=skf, scoring='r2')
     print(f"Cross-validated R² scores: {cv_results}")
     print(f"Mean cross-validated R² score: {cv_results.mean():.5f}")
     return cv_results
