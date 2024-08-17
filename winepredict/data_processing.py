@@ -123,13 +123,14 @@ def calculate_vif(df):
     vif_data["VIF"] = [variance_inflation_factor(df.values, i) for i in range(len(df.columns))]
     return vif_data
 
-def preprocess_and_analyze_data(file_path, sheet_name='Data', output_file='correlation_matrix.png'):
+def preprocess_and_analyze_data(file_path, sheet_name='Data', output_file='correlation_matrix.png', save_vif=False):
     """Loads, preprocesses, and performs correlation analysis on the data.
 
     Args:
         file_path (str): The path to the Excel file containing the data.
         sheet_name (str): The name of the sheet in the Excel file to load. Defaults to 'Data'.
         output_file (str): The file path to save the correlation matrix image. Defaults to 'correlation_matrix.png'.
+        save_vif (bool): Whether to save VIF results to an Excel file. Defaults to False.
 
     Returns:
         pd.DataFrame: A DataFrame containing the scaled data with the 'Average Wine Price' column.
@@ -158,14 +159,15 @@ def preprocess_and_analyze_data(file_path, sheet_name='Data', output_file='corre
     plt.savefig(output_file)  # Save the figure
     plt.close()  # Close the plot to avoid displaying it
 
-    # Calculate VIF
-    vif_df = calculate_vif(scaled_df.drop(['Average Wine Price'], axis=1))
+    if save_vif:
+        # Calculate VIF
+        vif_df = calculate_vif(scaled_df.drop(['Average Wine Price'], axis=1))
 
-    # Save VIF results to an Excel file
-    vif_output_file = output_file.replace('.png', '_vif.xlsx')
-    with pd.ExcelWriter(vif_output_file) as writer:
-        vif_df.to_excel(writer, sheet_name='VIF')
+        # Save VIF results to an Excel file
+        vif_output_file = output_file.replace('.png', '_vif.xlsx')
+        with pd.ExcelWriter(vif_output_file) as writer:
+            vif_df.to_excel(writer, sheet_name='VIF')
 
-    print(f"VIF results saved to {vif_output_file}")
+        print(f"VIF results saved to {vif_output_file}")
 
     return scaled_df
