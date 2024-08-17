@@ -29,12 +29,12 @@ def download_fred_data(series_id, api_key):
 
     return df[['value']]
 
-def process_fred_data(api_key, start_date='1996-01-01', output_file='FRED_Data.xlsx'):
+def process_fred_data(api_key, start_date='1992-01-01', output_file='FRED_Data.xlsx'):
     """Processes FRED data by downloading, filtering, resampling, and saving it to an Excel file.
 
     Args:
         api_key (str): The API key for accessing FRED data.
-        start_date (str): The start date for filtering the data. Defaults to '1996-01-01'.
+        start_date (str): The start date for filtering the data. Defaults to '1992-01-01'.
         output_file (str): The name of the output Excel file. Defaults to 'FRED_Data.xlsx'.
     """
     # Define series IDs for FRED data
