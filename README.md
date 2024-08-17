@@ -2,6 +2,8 @@
 
 We explore the predictive power of various machine learning models in forecasting wine prices using a comprehensive dataset of economic indicators. Building on previous research that primarily utilized Lasso and Ridge regression models, we extend the analysis to include a wider range of models such as Linear Regression, Neural Networks, Support Vector Machines, Decision Trees, Random Forests, Gradient Boosting, XGBoost, LightGBM, and CatBoost. Our dataset spans from January 1996 to June 2024 and includes monthly data on key economic variables sourced from Federal Reserve Economic Data (FRED). The performance of each model is evaluated using metrics such as R², RMSE, and MAE. Our findings indicate that while traditional models like Ridge Regression perform well, other models such as Gradient Boosting also show strong predictive capabilities. Notably, the CatBoost model, after hyperparameter tuning, demonstrates significant potential with an R² score of 0.92763. These results highlight the importance of considering a diverse set of models for accurate wine price forecasting, providing valuable insights for investors, producers, and policymakers.
 
+Overleaf: https://www.overleaf.com/project/66b90bd2aa194eb180e90fd2
+
 ## Installation
 
 To install the WinePredict library on a Jupyter workbook, use the following command:
