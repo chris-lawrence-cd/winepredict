@@ -36,7 +36,7 @@ def train_and_evaluate_models(scaled_df):
         "Linear Regression": LinearRegression(),
         "Ridge Regression": Ridge(),
         "Lasso Regression": Lasso(),
-        "K-Nearest Neighbors": KNeighborsRegressor(),
+        #"K-Nearest Neighbors": KNeighborsRegressor(),
         "Neural Network": MLPRegressor(max_iter=2000),  # Increased max_iter to 2000
         "Support Vector Machine (RBF Kernel)": SVR(),
         "Decision Tree": DecisionTreeRegressor(),
