@@ -18,7 +18,7 @@ def download_fred_data(series_id, api_key):
     """
     url = f"https://api.stlouisfed.org/fred/series/observations?series_id={series_id}&api_key={api_key}&file_type=json"
     response = requests.get(url)
-    data response.json()
+    data = response.json()  # Corrected this line
     df = pd.DataFrame(data['observations'])
     df['date'] = pd.to_datetime(df['date'])
     df.set_index('date', inplace=True)
