@@ -11,6 +11,7 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 from catboost import CatBoostRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
+import warnings
 
 def train_and_evaluate_models(scaled_df):
     """Splits the dataset, trains multiple models, and evaluates their performance.
@@ -34,7 +35,7 @@ def train_and_evaluate_models(scaled_df):
         "Ridge Regression": Ridge(),
         "Lasso Regression": Lasso(),
         "K-Nearest Neighbors": KNeighborsRegressor(),
-        "Neural Network": MLPRegressor(max_iter=1000),
+        "Neural Network": MLPRegressor(max_iter=2000),  # Increased max_iter to 2000
         "Support Vector Machine (RBF Kernel)": SVR(),
         "Decision Tree": DecisionTreeRegressor(),
         "Random Forest": RandomForestRegressor(),
@@ -51,7 +52,9 @@ def train_and_evaluate_models(scaled_df):
 
     results = {}
     for name, model in models.items():
-        model.fit(X_train, y_train)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=ConvergenceWarning)
+            model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
         r2 = r2_score(y_test, y_pred)
         rmse = np.sqrt(mean_squared_error(y_test, y_pred))
