@@ -12,6 +12,7 @@ from lightgbm import LGBMRegressor
 from catboost import CatBoostRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from sklearn.exceptions import ConvergenceWarning  # Import ConvergenceWarning
+import matplotlib.pyplot as plt  # Import matplotlib.pyplot
 import warnings
 
 def train_and_evaluate_models(scaled_df):
@@ -62,7 +63,7 @@ def train_and_evaluate_models(scaled_df):
         mae = mean_absolute_error(y_test, y_pred)
 
         # Calculate adjusted R²
-        adj_r2 = 1 - ((1 - r2) * (n - 1)) / (n - p - 1)
+        adj_r2 = 1 - ((1 - r2) * (n - 1)) / (n - - 1)
 
         results[name] = {'R²': r2, 'Adjusted R²': adj_r2, 'RMSE': rmse, 'MAE': mae}
         print(f"{name} trained.")
@@ -115,7 +116,7 @@ def tune_and_evaluate_catboost(X_train, y_train, X_test, y_test):
     feature_importance.sort_values().plot(kind='barh')
     plt.title('Feature Importance - Best CatBoost Model')
     plt.savefig('Feature_Importance.png')
-    plt.show()
+    plt.close()  # Close the plot to avoid displaying it
 
     # Rank feature importance
     ranked_feature_importance = feature_importance.sort_values(ascending=False)
