@@ -70,6 +70,7 @@ def train_and_evaluate_models(scaled_df):
 
     # Display results in a more readable format
     results_df = pd.DataFrame(results).T
+    print("------------------")
     print("Model Performance:")
     print(results_df)
 
