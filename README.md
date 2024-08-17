@@ -4,10 +4,10 @@ We explore the predictive power of various machine learning models in forecastin
 
 ## Installation
 
-To install the WinePredict library from GitHub, use the following command:
+To install the WinePredict library on a Jupyter workbook, use the following command:
 
-```bash
-pip install git+https://github.com/chris-lawrence-cd/winepredict.git
+```python
+!pip install git+https://github.com/chris-lawrence-cd/winepredict.git
 
 Usage
 
