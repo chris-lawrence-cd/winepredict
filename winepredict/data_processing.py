@@ -5,6 +5,7 @@ import openpyxl
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 def download_fred_data(series_id, api_key):
     """Downloads data from FRED for a given series ID.
@@ -108,12 +109,27 @@ def process_fred_data(api_key, start_date='1992-01-01', output_file='FRED_Data.x
 
     print("Data downloaded, filtered, resampled to monthly frequency, and saved to {}.".format(output_file))
 
-def preprocess_and_analyze_data(file_path, sheet_name='Data'):
+def calculate_vif(df):
+    """Calculates VIF for each feature in the DataFrame.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the features.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the VIF values for each feature.
+    """
+    vif_data = pd.DataFrame()
+    vif_data["Feature"] = df.columns
+    vif_data["VIF"] = [variance_inflation_factor(df.values, i) for i in range(len(df.columns))]
+    return vif_data
+
+def preprocess_and_analyze_data(file_path, sheet_name='Data', output_file='correlation_matrix.png'):
     """Loads, preprocesses, and performs correlation analysis on the data.
 
     Args:
         file_path (str): The path to the Excel file containing the data.
         sheet_name (str): The name of the sheet in the Excel file to load. Defaults to 'Data'.
+        output_file (str): The file path to save the correlation matrix image. Defaults to 'correlation_matrix.png'.
 
     Returns:
         pd.DataFrame: A DataFrame containing the scaled data with the 'Average Wine Price' column.
@@ -139,6 +155,17 @@ def preprocess_and_analyze_data(file_path, sheet_name='Data'):
     plt.figure(figsize=(12, 8))
     sns.heatmap(scaled_df.corr(), annot=True, cmap='coolwarm')
     plt.title('Correlation Matrix')
-    plt.show()
+    plt.savefig(output_file)  # Save the figure
+    plt.close()  # Close the plot to avoid displaying it
+
+    # Calculate VIF
+    vif_df = calculate_vif(scaled_df.drop(['Average Wine Price'], axis=1))
+
+    # Save VIF results to an Excel file
+    vif_output_file = output_file.replace('.png', '_vif.xlsx')
+    with pd.ExcelWriter(vif_output_file) as writer:
+        vif_df.to_excel(writer, sheet_name='VIF')
+
+    print(f"VIF results saved to {vif_output_file}")
 
     return scaled_df
