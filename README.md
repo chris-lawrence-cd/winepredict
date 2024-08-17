@@ -8,10 +8,13 @@ To install the WinePredict library on a Jupyter workbook, use the following comm
 
 ```python
 !pip install git+https://github.com/chris-lawrence-cd/winepredict.git
+```
 
 Usage
 
 Here’s an example of how to use the WinePredict library:
+
+```python
 
 # Import necessary libraries
 import numpy as np
@@ -67,6 +70,7 @@ visualize_residuals(y_test, best_catboost.predict(X_test))
 
 # Plot feature importance
 plot_feature_importance(catboost_results['ranked_feature_importance'])
+```
 
 License
 
