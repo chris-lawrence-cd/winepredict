@@ -1,3 +1,10 @@
+import os
+
+# Create docs directory if it doesn't exist
+if not os.path.exists('docs'):
+    os.makedirs('docs')
+
+# Create a minimal conf.py
 conf_content = """
 import os
 import sys
@@ -20,25 +27,13 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
-
-latex_engine = 'xelatex'
-latex_elements = {
-    'papersize': 'a4paper',
-    'pointsize': '10pt',
-    'preamble': r'''
-\\usepackage{fontspec}
-\\setmainfont{DejaVu Serif}
-\\setsansfont{DejaVu Sans}
-\\setmonofont{DejaVu Sans Mono}
-''',
-}
 """
 
 with open("docs/conf.py", "w") as f:
     f.write(conf_content)
-Create the necessary RST files:
-rst_files = {
-    "index.rst": """
+
+# Create a minimal index.rst
+index_content = """
 Welcome to WinePredict's documentation!
 =======================================
 
@@ -46,10 +41,7 @@ Welcome to WinePredict's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   introduction
-   installation
-   usage
-   api_reference
+   modules
 
 Indices and tables
 ==================
@@ -57,34 +49,64 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-""",
-    "introduction.rst": "Introduction\n============\n\nWinePredict is a library for predicting wine prices.",
-    "installation.rst": "Installation\n============\n\nInstall WinePredict using pip:\n\n.. code-block:: bash\n\n    pip install git+https://github.com/chris-lawrence-cd/winepredict.git",
-    "usage.rst": "Usage\n=====\n\nExample usage of WinePredict.",
-    "api_reference.rst": """
-API Reference
-=============
+"""
 
-.. toctree::
-   :maxdepth: 2
+with open("docs/index.rst", "w") as f:
+    f.write(index_content)
 
-   data_processing
-   model_evaluation
-   model_training
-   visualization
-""",
-    "data_processing.rst": "Data Processing\n===============\n\n.. automodule:: winepredict.data_processing\n   :members:",
-    "model_evaluation.rst": "Model Evaluation\n================\n\n.. automodule:: winepredict.model_evaluation\n   :members:",
-    "model_training.rst": "Model Training\n==============\n\n.. automodule:: winepredict.model_training\n   :members:",
-    "visualization.rst": "Visualization\n=============\n\n.. automodule:: winepredict.visualization\n   :members:",
-}
+# Create a Makefile
+makefile_content = """
+# Minimal makefile for Sphinx documentation
 
-for filename, content in rst_files.items():
-    with open(f"docs/{filename}", "w") as f:
-        f.write(content)
+# You can set these variables from the command line.
+SPHINXOPTS    =
+SPHINXBUILD   = sphinx-build
+SOURCEDIR     = .
+BUILDDIR      = _build
 
-# Build the HTML documentation
+# Put it first so that "make" without argument is like "make help".
+help:
+	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+
+.PHONY: help Makefile
+
+# Catch-all target: route all unknown targets to Sphinx using the new
+# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+%: Makefile
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+"""
+
+with open("docs/Makefile", "w") as f:
+    f.write(makefile_content)
+
+# Generate API documentation
+!sphinx-apidoc -o docs/ winepredict
+
+# Build HTML documentation
+print("Building HTML documentation...")
 !make -C docs html
 
-# Build the PDF documentation
+# Build PDF documentation
+print("\nBuilding PDF documentation...")
 !make -C docs latexpdf
+
+# Check if the documentation was generated successfully
+if os.path.exists('docs/_build/html/index.html'):
+    print("\nHTML documentation generated successfully.")
+else:
+    print("\nError: HTML documentation not generated.")
+
+if os.path.exists('docs/_build/latex/winepredict.pdf'):
+    print("PDF documentation generated successfully.")
+else:
+    print("Error: PDF documentation not generated.")
+
+# Print the contents of the docs directory
+print("\nContents of the docs directory:")
+for root, dirs, files in os.walk('docs'):
+    level = root.replace('docs', '').count(os.sep)
+    indent = ' ' * 4 * level
+    print(f"{indent}{os.path.basename(root)}/")
+    sub_indent = ' ' * 4 * (level + 1)
+    for file in files:
+        print(f"{sub_indent}{file}")
