@@ -11,7 +11,6 @@ Key Features
    - Linear Regression
    - Ridge Regression
    - Lasso Regression
-   - K-Nearest Neighbors
    - Neural Networks
    - Support Vector Machines
    - Decision Trees
