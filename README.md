@@ -1,9 +1,9 @@
 # WinePredict: Forecasting Wine Prices
 
 ![Contributors](https://img.shields.io/github/contributors/chris-lawrence-cd/winepredict)
+![Build Status](https://github.com/chris-lawrence-cd/winepredict/actions/workflows/build.yml/badge.svg)
 ![Issues](https://img.shields.io/github/issues/chris-lawrence-cd/winepredict)
 ![Repo Size](https://img.shields.io/github/repo-size/chris-lawrence-cd/winepredict)
-![Lines of Code](https://img.shields.io/tokei/lines/github/chris-lawrence-cd/winepredict)
 ![Last Commit](https://img.shields.io/github/last-commit/chris-lawrence-cd/winepredict)
 ![License](https://img.shields.io/github/license/chris-lawrence-cd/winepredict)
 
