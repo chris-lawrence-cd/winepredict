@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="images/image.png" alt="Header Image" width="800">
+</p>
+
+
 # WinePredict: Forecasting Wine Prices
 
 ![Contributors](https://img.shields.io/github/contributors/chris-lawrence-cd/winepredict)
