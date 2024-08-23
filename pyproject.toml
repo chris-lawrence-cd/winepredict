@@ -25,3 +25,7 @@ dependencies = [
     "torchvision",
     "torchaudio"
 ]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["winepredict"]
