@@ -10,8 +10,9 @@ Linear Regression is a simple and widely used statistical method for modeling th
 ### Mathematical Notation
 The model is represented as:
 
-![Equation](https://latex.codecogs.com/png.latex?y%20%3D%20%5Cbeta_0%20%2B%20%5Cbeta_1%20x_1%20%2B%20%5Cbeta_2%20x_2%20%2B%20...%20%2B%20%5Cbeta_n%20x_n%20%2B%20%5Cepsilon)
-
+\[
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n + \epsilon
+\]
 
 where:
 - \(y\) is the dependent variable
