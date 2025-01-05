@@ -17,6 +17,7 @@ dependencies = [
     "scikit-learn",
     "xgboost",
     "lightgbm",
+    "statsmodels",
     "catboost",
     "openpyxl",
     "requests",
