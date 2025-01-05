@@ -98,8 +98,10 @@ def tune_and_evaluate_catboost(X_train, y_train, X_test, y_test):
     grid_search = GridSearchCV(estimator=catboost_model, param_grid=param_grid, scoring='neg_mean_squared_error', cv=3, n_jobs=-1)
 
     try:
+        print("Starting grid search fitting...")
         grid_search.fit(X_train, y_train)
         best_model = grid_search.best_estimator_
+        print("Grid search fitting completed successfully.")
     except Exception as e:
         print(f"Error during CatBoost hyperparameter tuning: {e}")
         return {}
