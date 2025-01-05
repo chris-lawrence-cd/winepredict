@@ -60,9 +60,9 @@ Lasso Regression is similar to Ridge but uses L1 regularization, which can shrin
 ### Mathematical Notation
 The cost function is modified as:
 
-\[
+$$
 J(\beta) = \sum_{i=1}^{n} (y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij})^2 + \lambda \sum_{j=1}^{p} |\beta_j|
-\]
+$$
 
 ### Merits
 - Performs feature selection
@@ -79,12 +79,13 @@ Neural Networks are a set of algorithms designed to recognize patterns, modeled 
 ### Mathematical Notation
 A simple neural network with one hidden layer is represented as:
 
-\[
+$$
 a^{(2)} = g(W^{(1)}a^{(1)} + b^{(1)})
-\]
-\[
+$$
+
+$$
 a^{(3)} = g(W^{(2)}a^{(2)} + b^{(2)})
-\]
+$$
 
 where:
 - \(g\) is the activation function
@@ -106,9 +107,9 @@ SVM with RBF kernel is a powerful classification method that uses hyperplanes to
 ### Mathematical Notation
 The decision function is:
 
-\[
+$$
 f(x) = \sum_{i=1}^{n} \alpha_i y_i K(x_i, x) + b
-\]
+$$
 
 where:
 - \(K\) is the RBF kernel function
@@ -145,9 +146,9 @@ Random Forest is an ensemble method that constructs multiple decision trees duri
 ### Mathematical Notation
 The final prediction is the mode of predictions from individual trees:
 
-\[
+$$
 \hat{y} = \text{mode}(\{T(x; \Theta_m)\}_{m=1}^{M})
-\]
+$$
 
 ### Merits
 - Reduces overfitting
@@ -165,9 +166,9 @@ Gradient Boosting is an ensemble technique that builds models sequentially, each
 ### Mathematical Notation
 The model is represented as:
 
-\[
+$$
 F(x) = \sum_{m=1}^{M} \gamma_m T(x; \Theta_m)
-\]
+$$
 
 ### Merits
 - High predictive accuracy
@@ -185,9 +186,9 @@ XGBoost is an optimized distributed gradient boosting library designed to be hig
 ### Mathematical Notation
 Similar to Gradient Boosting, but with additional regularization:
 
-\[
+$$
 F(x) = \sum_{m=1}^{M} \gamma_m T(x; \Theta_m) + \Omega(T)
-\]
+$$
 
 where:
 - \(\Omega\) is the regularization term
@@ -208,9 +209,9 @@ LightGBM is a gradient boosting framework that uses tree-based learning algorith
 ### Mathematical Notation
 Similar to XGBoost, but optimized for speed:
 
-\[
+$$
 F(x) = \sum_{m=1}^{M} \gamma_m T(x; \Theta_m)
-\]
+$$
 
 ### Merits
 - Fast training speed
@@ -228,9 +229,9 @@ CatBoost is a gradient boosting algorithm that is particularly effective with ca
 ### Mathematical Notation
 CatBoost builds an ensemble of decision trees, where each tree is trained to correct the errors of the previous trees. The model can be represented as:
 
-\[
+$$
 F(x) = \sum_{m=1}^{M} \gamma_m T(x; \Theta_m)
-\]
+$$
 
 ### Merits
 - Handles categorical features natively
