@@ -111,7 +111,7 @@ def tune_and_evaluate_catboost(X_train, y_train, X_test, y_test):
 
     feature_importances = best_model.get_feature_importance(prettified=True)
 
-    return {
+    result = {
         "Best Parameters": grid_search.best_params_,
         "Best Estimator": best_model,
         "R²": r2,
@@ -119,3 +119,7 @@ def tune_and_evaluate_catboost(X_train, y_train, X_test, y_test):
         "MAE": mae,
         "Feature Importances": feature_importances
     }
+    
+    print("Result dictionary:", result)
+
+    return result
