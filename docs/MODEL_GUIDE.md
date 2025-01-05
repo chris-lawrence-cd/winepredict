@@ -15,10 +15,10 @@ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n + \epsilon
 $$
 
 where:
-- \(y\) is the dependent variable
-- \(x_1, x_2, ..., x_n\) are the independent variables
-- \(\beta_0, \beta_1, ..., \beta_n\) are the coefficients
-- \(\epsilon\) is the error term
+- $y$ is the dependent variable
+- $x_1, x_2, ..., x_n$ are the independent variables
+- $\beta_0, \beta_1, ..., \beta_n$ are the coefficients
+- $\epsilon$ is the error term
 
 ### Merits
 - Simple to implement and interpret
@@ -43,14 +43,14 @@ J(\beta) = \sum_{i=1}^{n} (y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij})^2 + \l
 $$
 
 where:
-- \(\lambda\) is the regularization parameter
+- $\lambda$ is the regularization parameter
 
 ### Merits
 - Reduces overfitting
 - Handles multicollinearity
 
 ### Demerits
-- Requires careful tuning of \(\lambda\)
+- Requires careful tuning of $\lambda$
 
 ## Lasso Regression
 
@@ -88,8 +88,8 @@ a^{(3)} = g(W^{(2)}a^{(2)} + b^{(2)})
 $$
 
 where:
-- \(g\) is the activation function
-- \(W\) and \(b\) are weights and biases
+- $g$ is the activation function
+- $W$ and $b$ are weights and biases
 
 ### Merits
 - Capable of capturing complex patterns
@@ -112,7 +112,7 @@ f(x) = \sum_{i=1}^{n} \alpha_i y_i K(x_i, x) + b
 $$
 
 where:
-- \(K\) is the RBF kernel function
+- $K$ is the RBF kernel function
 
 ### Merits
 - Effective in high-dimensional spaces
