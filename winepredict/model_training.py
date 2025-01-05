@@ -11,8 +11,8 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 from catboost import CatBoostRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
-from sklearn.exceptions import ConvergenceWarning  # Import ConvergenceWarning
-import matplotlib.pyplot as plt  # Import matplotlib.pyplot
+from sklearn.exceptions import ConvergenceWarning
+import matplotlib.pyplot as plt
 import warnings
 
 def train_and_evaluate_models(scaled_df):
@@ -24,6 +24,10 @@ def train_and_evaluate_models(scaled_df):
     Returns:
         pd.DataFrame: A DataFrame containing the performance metrics of each model.
     """
+    if scaled_df.empty:
+        print("Error: Input DataFrame is empty.")
+        return pd.DataFrame()
+
     # Splitting dataset into X and y
     y = scaled_df['Average Wine Price']
     X = scaled_df.drop(['Average Wine Price'], axis=1)
@@ -36,45 +40,40 @@ def train_and_evaluate_models(scaled_df):
         "Linear Regression": LinearRegression(),
         "Ridge Regression": Ridge(),
         "Lasso Regression": Lasso(),
-        #"K-Nearest Neighbors": KNeighborsRegressor(),
-        "Neural Network": MLPRegressor(max_iter=2000),  # Increased max_iter to 2000
+        # "K-Nearest Neighbors": KNeighborsRegressor(),
+        "Neural Network": MLPRegressor(max_iter=2000),
         "Support Vector Machine (RBF Kernel)": SVR(),
         "Decision Tree": DecisionTreeRegressor(),
         "Random Forest": RandomForestRegressor(),
         "Gradient Boosting": GradientBoostingRegressor(),
         "XGBoost": XGBRegressor(),
-        "LightGBM": LGBMRegressor(verbose=-1),  # Suppress LightGBM warnings
+        "LightGBM": LGBMRegressor(verbose=-1),
         "CatBoost": CatBoostRegressor(verbose=0)
     }
 
-    # Number of observations
-    n = X_test.shape[0]
-    # Number of predictors
-    p = X_test.shape[1]
+    results = []
 
-    results = {}
     for name, model in models.items():
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", category=ConvergenceWarning)
-            model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-        r2 = r2_score(y_test, y_pred)
-        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-        mae = mean_absolute_error(y_test, y_pred)
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", category=ConvergenceWarning)
+                model.fit(X_train, y_train)
 
-        # Calculate adjusted R²
-        adj_r2 = 1 - ((1 - r2) * (n - 1)) / (n - - 1)
+            y_pred = model.predict(X_test)
+            r2 = r2_score(y_test, y_pred)
+            rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+            mae = mean_absolute_error(y_test, y_pred)
 
-        results[name] = {'R²': r2, 'Adjusted R²': adj_r2, 'RMSE': rmse, 'MAE': mae}
-        print(f"{name} trained.")
+            results.append({
+                "Model": name,
+                "R²": r2,
+                "RMSE": rmse,
+                "MAE": mae
+            })
+        except Exception as e:
+            print(f"Error training {name}: {e}")
 
-    # Display results in a more readable format
-    results_df = pd.DataFrame(results).T
-    print("------------------")
-    print("Model Performance:")
-    print(results_df)
-
-    return results_df
+    return pd.DataFrame(results)
 
 def tune_and_evaluate_catboost(X_train, y_train, X_test, y_test):
     """Tunes hyperparameters for CatBoost, evaluates the best model, and visualizes feature importance.
@@ -88,45 +87,34 @@ def tune_and_evaluate_catboost(X_train, y_train, X_test, y_test):
     Returns:
         dict: A dictionary containing the best parameters, performance metrics, and ranked feature importance of the best CatBoost model.
     """
-    # Hyperparameter tuning for CatBoost
     param_grid = {
         'depth': [4, 6, 8],
-        'learning_rate': [0.01, 0.05, 0.1],
+        'learning_rate': [0.01, 0.1, 0.2],
         'iterations': [100, 200, 300]
     }
-    catboost = CatBoostRegressor(verbose=0)
-    grid_search = GridSearchCV(estimator=catboost, param_grid=param_grid, cv=5, scoring='r2')
-    grid_search.fit(X_train, y_train)
 
-    best_catboost = grid_search.best_estimator_
-    print("Best CatBoost parameters:", grid_search.best_params_)
+    catboost_model = CatBoostRegressor(verbose=0)
 
-    # Evaluate best model
-    y_pred_best = best_catboost.predict(X_test)
-    r2_best = r2_score(y_test, y_pred_best)
-    rmse_best = np.sqrt(mean_squared_error(y_test, y_pred_best))
-    mae_best = mean_absolute_error(y_test, y_pred_best)
+    grid_search = GridSearchCV(estimator=catboost_model, param_grid=param_grid, scoring='neg_mean_squared_error', cv=3, n_jobs=-1)
 
-    print(f"Best CatBoost R²: {r2_best:.5f}")
-    print(f"Best CatBoost RMSE: {rmse_best:.5f}")
-    print(f"Best CatBoost MAE: {mae_best:.5f}")
+    try:
+        grid_search.fit(X_train, y_train)
+        best_model = grid_search.best_estimator_
+    except Exception as e:
+        print(f"Error during CatBoost hyperparameter tuning: {e}")
+        return {}
 
-    # Visualize feature importance for the best model
-    feature_importance = pd.Series(best_catboost.feature_importances_, index=X_train.columns)
-    plt.figure(figsize=(12, 8))
-    feature_importance.sort_values().plot(kind='barh')
-    plt.title('Feature Importance - Best CatBoost Model')
-    plt.savefig('Feature_Importance.png')
-    plt.close()  # Close the plot to avoid displaying it
+    y_pred = best_model.predict(X_test)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+    mae = mean_absolute_error(y_test, y_pred)
 
-    # Rank feature importance
-    ranked_feature_importance = feature_importance.sort_values(ascending=False)
+    feature_importances = best_model.get_feature_importance(prettified=True)
 
     return {
-        'best_estimator': best_catboost,
-        'best_params': grid_search.best_params_,
-        'R²': r2_best,
-        'RMSE': rmse_best,
-        'MAE': mae_best,
-        'ranked_feature_importance': ranked_feature_importance
+        "Best Parameters": grid_search.best_params_,
+        "R²": r2,
+        "RMSE": rmse,
+        "MAE": mae,
+        "Feature Importances": feature_importances
     }
