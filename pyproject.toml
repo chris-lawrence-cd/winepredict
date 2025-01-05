@@ -10,21 +10,21 @@ authors = [
     { name="Chris Lawrence", email="chris@credenceanddecision.com" }
 ]
 dependencies = [
-    "numpy>=1.21,<2.0",
-    "pandas>=1.3,<2.0",
-    "seaborn>=0.11,<1.0",
-    "matplotlib>=3.4,<4.0",
-    "scikit-learn>=0.24,<2.0",
-    "xgboost>=1.4,<2.0",
-    "lightgbm>=3.2,<4.0",
-    "statsmodels>=0.12,<1.0",
-    "catboost>=0.26,<2.0",
-    "openpyxl>=3.0,<4.0",
-    "requests>=2.25,<3.0",
-    "dask[dataframe]>=2021.6,<2022.0",
-    "torch>=1.9,<2.0",
-    "torchvision>=0.10,<1.0",
-    "torchaudio>=0.9,<1.0"
+    "numpy>=1.21",
+    "pandas>=2.2,<3.0",
+    "seaborn>=0.11",
+    "matplotlib>=3.4",
+    "scikit-learn>=0.24",
+    "xgboost>=1.4",
+    "lightgbm>=3.2",
+    "statsmodels>=0.12",
+    "catboost>=0.26",
+    "openpyxl>=3.0",
+    "requests>=2.25",
+    "dask[dataframe]>=2021.6",
+    "torch>=1.9",
+    "torchvision>=0.10",
+    "torchaudio>=0.9"
 ]
 
 [tool.setuptools]
