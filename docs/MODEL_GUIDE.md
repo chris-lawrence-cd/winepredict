@@ -7,7 +7,7 @@ This guide provides an overview of the models used in the WinePredict library, i
 ### Overview
 Linear Regression is a simple and widely used statistical method for modeling the relationship between a dependent variable and one or more independent variables.
 
-### Mathematical Notation
+### Functional Form
 The model is represented as:
 
 $$
@@ -35,7 +35,7 @@ where:
 ### Overview
 Ridge Regression is a linear regression technique that includes L2 regularization to prevent overfitting by penalizing large coefficients.
 
-### Mathematical Notation
+### Functional Form
 The cost function is modified as:
 
 $$
@@ -57,7 +57,7 @@ where:
 ### Overview
 Lasso Regression is similar to Ridge but uses L1 regularization, which can shrink some coefficients to zero, effectively selecting features.
 
-### Mathematical Notation
+### Functional Form
 The cost function is modified as:
 
 $$
@@ -76,7 +76,7 @@ $$
 ### Overview
 Neural Networks are a set of algorithms designed to recognize patterns, modeled loosely after the human brain.
 
-### Mathematical Notation
+### Functional Form
 A simple neural network with one hidden layer is represented as:
 
 $$
@@ -104,7 +104,7 @@ where:
 ### Overview
 SVM with RBF kernel is a powerful classification method that uses hyperplanes to separate data points in a high-dimensional space.
 
-### Mathematical Notation
+### Functional Form
 The decision function is:
 
 $$
@@ -127,7 +127,7 @@ where:
 ### Overview
 Decision Trees are a non-parametric supervised learning method used for classification and regression.
 
-### Mathematical Notation
+### Functional Form
 The decision tree model is built by splitting the dataset into subsets based on the value of input features.
 
 ### Merits
@@ -143,7 +143,7 @@ The decision tree model is built by splitting the dataset into subsets based on 
 ### Overview
 Random Forest is an ensemble method that constructs multiple decision trees during training and outputs the mode of their predictions.
 
-### Mathematical Notation
+### Functional Form
 The final prediction is the mode of predictions from individual trees:
 
 $$
@@ -163,7 +163,7 @@ $$
 ### Overview
 Gradient Boosting is an ensemble technique that builds models sequentially, each correcting the errors of its predecessor.
 
-### Mathematical Notation
+### Functional Form
 The model is represented as:
 
 $$
@@ -183,7 +183,7 @@ $$
 ### Overview
 XGBoost is an optimized distributed gradient boosting library designed to be highly efficient and flexible.
 
-### Mathematical Notation
+### Functional Form
 Similar to Gradient Boosting, but with additional regularization:
 
 $$
@@ -206,7 +206,7 @@ where:
 ### Overview
 LightGBM is a gradient boosting framework that uses tree-based learning algorithms, optimized for speed and efficiency.
 
-### Mathematical Notation
+### Functional Form
 Similar to XGBoost, but optimized for speed:
 
 $$
@@ -226,7 +226,7 @@ $$
 ### Overview
 CatBoost is a gradient boosting algorithm that is particularly effective with categorical features and is designed to handle categorical data without extensive preprocessing.
 
-### Mathematical Notation
+### Functional Form
 CatBoost builds an ensemble of decision trees, where each tree is trained to correct the errors of the previous trees. The model can be represented as:
 
 $$
