@@ -10,9 +10,9 @@ Linear Regression is a simple and widely used statistical method for modeling th
 ### Mathematical Notation
 The model is represented as:
 
-\[
+$$
 y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n + \epsilon
-\]
+$$
 
 where:
 - \(y\) is the dependent variable
@@ -38,9 +38,9 @@ Ridge Regression is a linear regression technique that includes L2 regularizatio
 ### Mathematical Notation
 The cost function is modified as:
 
-\[
+$$
 J(\beta) = \sum_{i=1}^{n} (y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij})^2 + \lambda \sum_{j=1}^{p} \beta_j^2
-\]
+$$
 
 where:
 - \(\lambda\) is the regularization parameter
