@@ -113,6 +113,7 @@ def tune_and_evaluate_catboost(X_train, y_train, X_test, y_test):
 
     return {
         "Best Parameters": grid_search.best_params_,
+        "Best Estimator": best_model,
         "R²": r2,
         "RMSE": rmse,
         "MAE": mae,
