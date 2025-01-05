@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
+
 def download_fred_data(series_id, api_key):
     """Downloads data from FRED for a given series ID.
 
@@ -19,16 +20,26 @@ def download_fred_data(series_id, api_key):
         pd.DataFrame: A DataFrame containing the downloaded data with dates as the index.
     """
     url = f"https://api.stlouisfed.org/fred/series/observations?series_id={series_id}&api_key={api_key}&file_type=json"
-    response = requests.get(url)
-    data = response.json()  # Corrected this line
-    df = pd.DataFrame(data['observations'])
-    df['date'] = pd.to_datetime(df['date'])
-    df.set_index('date', inplace=True)
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Raises an HTTPError for bad responses
+        data = response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data for series {series_id}: {e}")
+        return pd.DataFrame()  # Return an empty DataFrame on failure
 
-    # Clean data: replace '.' with NaN and convert to float
+    # Parse and clean data
+    df = pd.DataFrame(data.get('observations', []))
+    if df.empty:
+        print(f"No data found for series {series_id}.")
+        return df
+
+    df['date'] = pd.to_datetime(df['date'], errors='coerce')
+    df.set_index('date', inplace=True)
     df['value'] = pd.to_numeric(df['value'], errors='coerce')
 
     return df[['value']]
+
 
 def process_fred_data(api_key, start_date='1992-01-01', output_file='FRED_Data.xlsx'):
     """Processes FRED data by downloading, filtering, resampling, and saving it to an Excel file.
@@ -38,7 +49,6 @@ def process_fred_data(api_key, start_date='1992-01-01', output_file='FRED_Data.x
         start_date (str): The start date for filtering the data. Defaults to '1992-01-01'.
         output_file (str): The name of the output Excel file. Defaults to 'FRED_Data.xlsx'.
     """
-    # Define series IDs for FRED data
     fred_series_ids = {
         'Average Wine Price': 'APU0000720311',
         'GDP': 'GDP',
@@ -61,22 +71,16 @@ def process_fred_data(api_key, start_date='1992-01-01', output_file='FRED_Data.x
         'Personal Savings Rate': 'PSAVERT'
     }
 
-    # Download FRED data
     fred_data = {}
     for name, series_id in fred_series_ids.items():
         fred_data[name] = download_fred_data(series_id, api_key)
 
-    # Combine all data into a single DataFrame
     combined_df = pd.concat(fred_data.values(), axis=1)
     combined_df.columns = fred_data.keys()
 
-    # Filter data to include only rows on or after the start date
     filtered_df = combined_df[combined_df.index >= start_date]
+    monthly_df = filtered_df.resample('ME').mean()
 
-    # Resample data to monthly frequency
-    monthly_df = filtered_df.resample('M').mean()
-
-    # Create data dictionary
     data_dict = pd.DataFrame({
         'Variable Name': list(fred_series_ids.keys()),
         'FRED Series ID': list(fred_series_ids.values()),
@@ -103,12 +107,12 @@ def process_fred_data(api_key, start_date='1992-01-01', output_file='FRED_Data.x
         ]
     })
 
-    # Save data to an Excel file with two tabs
     with pd.ExcelWriter(output_file) as writer:
         monthly_df.to_excel(writer, sheet_name='Data')
         data_dict.to_excel(writer, sheet_name='Data Dictionary', index=False)
 
     print("Data downloaded, filtered, resampled to monthly frequency, and saved to {}.".format(output_file))
+
 
 def calculate_vif(df):
     """Calculates VIF for each feature in the DataFrame.
@@ -124,6 +128,7 @@ def calculate_vif(df):
     vif_data["VIF"] = [variance_inflation_factor(df.values, i) for i in range(len(df.columns))]
     return vif_data
 
+
 def preprocess_and_analyze_data(file_path, sheet_name='Data', output_file='correlation_matrix.png', save_vif=False):
     """Loads, preprocesses, and performs correlation analysis on the data.
 
@@ -136,39 +141,29 @@ def preprocess_and_analyze_data(file_path, sheet_name='Data', output_file='corre
     Returns:
         pd.DataFrame: A DataFrame containing the scaled data with the 'Average Wine Price' column.
     """
-    # Load data
     data = pd.read_excel(file_path, sheet_name=sheet_name)
 
-    # Data preprocessing
-    # Handle missing values by filling with the mean of each column
     data.fillna(data.mean(), inplace=True)
 
-    # Drop the datetime column if it exists
     if 'date' in data.columns:
         data.drop(columns=['date'], inplace=True)
 
-    # Feature scaling
     scaler = StandardScaler()
     scaled_data = scaler.fit_transform(data.drop(['Average Wine Price'], axis=1))
     scaled_df = pd.DataFrame(scaled_data, columns=data.columns[1:])
     scaled_df['Average Wine Price'] = data['Average Wine Price'].values
 
-    # Correlation analysis
     plt.figure(figsize=(12, 8))
     sns.heatmap(scaled_df.corr(), annot=True, cmap='coolwarm')
     plt.title('Correlation Matrix')
-    plt.savefig(output_file)  # Save the figure
-    plt.close()  # Close the plot to avoid displaying it
+    plt.savefig(output_file)
+    plt.close()
 
     if save_vif:
-        # Calculate VIF
         vif_df = calculate_vif(scaled_df.drop(['Average Wine Price'], axis=1))
-
-        # Save VIF results to an Excel file
         vif_output_file = output_file.replace('.png', '_vif.xlsx')
         with pd.ExcelWriter(vif_output_file) as writer:
             vif_df.to_excel(writer, sheet_name='VIF')
-
         print(f"VIF results saved to {vif_output_file}")
 
     return scaled_df
