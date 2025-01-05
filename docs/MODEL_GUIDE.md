@@ -191,7 +191,7 @@ F(x) = \sum_{m=1}^{M} \gamma_m T(x; \Theta_m) + \Omega(T)
 $$
 
 where:
-- \(\Omega\) is the regularization term
+- $\Omega$ is the regularization term
 
 ### Merits
 - Fast and scalable
